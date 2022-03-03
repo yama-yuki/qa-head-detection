@@ -1,8 +1,18 @@
-from transformers import BertTokenizer, BertForQuestionAnswering, AutoTokenizer, AutoConfig
+import argparse
+import csv
 import torch
+from transformers import BertForQuestionAnswering, AutoTokenizer, AutoConfig
 
-model_directory = '../models/bert-base-uncased_tok_2_3e-5_24'
-pretrained_model = 'bert-base-uncased'
+parser = argparse.ArgumentParser()
+parser.add_argument('--model_dir')
+parser.add_argument('--pretrained', default='bert-base-uncased')
+parser.add_argument('--input_path')
+parser.add_argument('--output_path')
+args = parser.parse_args() 
+model_directory = args.model_dir
+pretrained_model = args.pretrained
+in_path = args.input_path
+out_path = args.output_path
 
 config = AutoConfig.from_pretrained(model_directory + "/config.json")
 tokenizer_config = AutoConfig.from_pretrained(model_directory + "/tokenizer_config.json")
@@ -11,18 +21,27 @@ model = BertForQuestionAnswering.from_pretrained(pretrained_model, config=config
 model.load_state_dict(torch.load(model_directory + "/pytorch_model.bin", map_location=torch.device('cuda')))
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model, config=tokenizer_config)
 
-# 入力テキスト
-context = "I ate sushi before I took a walk to the station."
-question="ate"
+def predict(question, context):
+    ## predict
+    inputs = tokenizer.encode_plus(question, context, add_special_tokens=True, return_tensors="pt")
+    input_ids = inputs["input_ids"].tolist()[0]
+    output = model(**inputs)
+    answer_start = torch.argmax(output.start_logits)  
+    answer_end = torch.argmax(output.end_logits) + 1 
+    answer = tokenizer.convert_tokens_to_string(tokenizer.convert_ids_to_tokens(input_ids[answer_start:answer_end]))
+    return answer
 
-# 推論の実行
-inputs = tokenizer.encode_plus(question, context, add_special_tokens=True, return_tensors="pt")
-input_ids = inputs["input_ids"].tolist()[0]
-output = model(**inputs)
-answer_start = torch.argmax(output.start_logits)  
-answer_end = torch.argmax(output.end_logits) + 1 
-answer = tokenizer.convert_tokens_to_string(tokenizer.convert_ids_to_tokens(input_ids[answer_start:answer_end]))
+def main():
+    with open(in_path,mode='r',encoding='utf-8') as f:
+        with open(out_path,mode='w',encoding='utf-8') as o:
+            reader = csv.reader(f, delimiter='\t')
+            writer = csv.writer(o, delimiter='\t')
 
-# 結果出力
-print("Q: "+question)
-print("A: "+answer)
+            for row in reader:
+                context = row[0]
+                questions = row[1:]
+                answers = [predict(question, context) for question in questions]
+                writer.writerow(answers)
+
+if __name__ == '__main__':
+    main()
