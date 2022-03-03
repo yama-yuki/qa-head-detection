@@ -12,6 +12,7 @@ Table of Contents
 
 # Description
 [1] For fine-tuning BERT QA models on custom datasets.
+
 [2] (Ongoing) For detecting a dependency head of a word with BERT QA models.
 
 ## Requirements
@@ -28,8 +29,10 @@ git clone https://github.com/yama-yuki/qa-head-detection.git
 conda create -n qa python=3.8
 # Activate conda environment
 conda activate qa
-# Make dirs
-mkdir -p data models
+# Fine-tune BERT
+sh train.sh
+# Predict
+sh demo.sh
 
 2. Dep-head detection
 To be written
