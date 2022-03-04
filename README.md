@@ -11,7 +11,7 @@ Table of Contents
 <!--te-->
 
 # Description
-[1] For fine-tuning BERT QA models on custom datasets.
+[1] For fine-tuning BERT QA models on custom datasets. (need to modify train.sh)
 
 [2] (Ongoing) For detecting a dependency head of a word with BERT QA models.
 
