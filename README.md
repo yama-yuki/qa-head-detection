@@ -22,7 +22,7 @@ data_files['validation'] = args.custom_dev_data
 
 raw_datasets = load_dataset('squad.py', data_files=data_files)
 ```
-Write paths to the datasets in train.sh.
+Write paths to the datasets in train.sh. Only accepts .json format.
 ```sh
 # train.sh
 python ${SCRIPT_DIR}/main.py \
