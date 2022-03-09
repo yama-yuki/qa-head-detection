@@ -31,7 +31,8 @@ raw_datasets = load_dataset('squad.py', data_files=data_files)
 
 ## Usage
 ```sh
-# Fine-tune
+1. Fine-tune on custom datasets
+# Train
 sh train.sh
 # Predict
 sh demo.sh
