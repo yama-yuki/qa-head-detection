@@ -3,3 +3,4 @@ models/
 qa/
 scripts/obs
 scripts/log
+scripts/create_data.py
