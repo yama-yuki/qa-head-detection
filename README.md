@@ -11,7 +11,7 @@ Table of Contents
 <!--te-->
 
 # Description
-[1] Fine-tune BERT QA models on custom datasets. 
+[1] Fine-tune BERT QA models on a custom dataset. 
 
 ```py
 # main.py
@@ -22,14 +22,14 @@ data_files['validation'] = args.custom_dev_data
 
 raw_datasets = load_dataset('squad.py', data_files=data_files)
 ```
-Write paths to the datasets in train.sh. The script only accepts .json format.
+Write paths to the dataset in train.sh. The script only accepts .json format.
 ```sh
 # train.sh
 python ${SCRIPT_DIR}/main.py \
   --custom_train_data ${train_data} \
   --custom_dev_data ${dev_data} \
 ```
-The file should look like this.
+The train/validation files should look like this.
 ```
 {"data": [{
   "title": "None", 
@@ -53,7 +53,7 @@ The file should look like this.
 
 ## Usage
 ```sh
-1. Fine-tune on custom datasets
+1. Fine-tune on a custom dataset
 # Train
 sh train.sh
 # Predict
