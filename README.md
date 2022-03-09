@@ -11,9 +11,18 @@ Table of Contents
 <!--te-->
 
 # Description
-[1] For fine-tuning BERT QA models on custom datasets. (need to modify train.sh)
+[1] Fine-tune BERT QA models on custom datasets. (need to change train.sh)
 
-[2] (Ongoing) For detecting a dependency head of a word with BERT QA models.
+```py
+#Modified to take arguments for custom datasets in main.py main().
+data_files = {'train': '', 'validation': '',}
+data_files['train'] = args.custom_train_data
+data_files['validation'] = args.custom_dev_data
+
+raw_datasets = load_dataset('squad.py', data_files=data_files)
+```
+
+[2] (Ongoing) Detect a dependency head of a word with BERT QA models.
 
 ## Requirements
 - python 3.8
