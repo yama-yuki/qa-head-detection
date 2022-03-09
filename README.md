@@ -31,14 +31,7 @@ raw_datasets = load_dataset('squad.py', data_files=data_files)
 
 ## Usage
 ```sh
-1. Fine-tune on a custom dataset
-# Clone repository
-git clone https://github.com/yama-yuki/qa-head-detection.git
-# Create conda environment
-conda create -n qa python=3.8
-# Activate conda environment
-conda activate qa
-# Fine-tune BERT
+# Fine-tune
 sh train.sh
 # Predict
 sh demo.sh
