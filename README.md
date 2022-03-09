@@ -26,8 +26,8 @@ raw_datasets = load_dataset('squad.py', data_files=data_files)
 
 ## Requirements
 - python 3.8
-- pytorch 1.10.2
-- transformers 4.16.2
+- pytorch 1.10
+- transformers 4.16
 
 ## Usage
 ```sh
