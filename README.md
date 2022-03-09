@@ -11,15 +11,22 @@ Table of Contents
 <!--te-->
 
 # Description
-[1] Fine-tune BERT QA models on custom datasets. (need to change train.sh)
+[1] Fine-tune BERT QA models on custom datasets. 
 
 ```py
-#Modified to take arguments for custom datasets in main.py main().
+# main.py
+# Modified to take arguments for custom datasets in main().
 data_files = {'train': '', 'validation': '',}
 data_files['train'] = args.custom_train_data
 data_files['validation'] = args.custom_dev_data
 
 raw_datasets = load_dataset('squad.py', data_files=data_files)
+```
+Write paths to the datasets in train.sh.
+```sh
+python ${SCRIPT_DIR}/main.py \
+  --custom_train_data ${train_data} \
+  --custom_dev_data ${dev_data} \
 ```
 
 [2] (Ongoing) Detect a dependency head of a word with BERT QA models.
