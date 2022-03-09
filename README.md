@@ -24,6 +24,7 @@ raw_datasets = load_dataset('squad.py', data_files=data_files)
 ```
 Write paths to the datasets in train.sh.
 ```sh
+# train.sh
 python ${SCRIPT_DIR}/main.py \
   --custom_train_data ${train_data} \
   --custom_dev_data ${dev_data} \
