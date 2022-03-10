@@ -5,7 +5,7 @@ import logging
 import os
 import sys
 import torch
-from transformers import BertForQuestionAnswering, AutoTokenizer, AutoConfig
+from transformers import AutoModelForQuestionAnswering, AutoTokenizer, AutoConfig#BertForQuestionAnswering
 from tqdm import tqdm
 from evalq import evaluate
 
@@ -35,7 +35,7 @@ def main():
     config = AutoConfig.from_pretrained(os.path.join(model_directory, "config.json"))
     tokenizer_config = AutoConfig.from_pretrained(os.path.join(model_directory, "tokenizer_config.json"))
 
-    model = BertForQuestionAnswering.from_pretrained(pretrained_model, config=config)
+    model = AutoModelForQuestionAnswering.from_pretrained(pretrained_model, config=config)
     model.load_state_dict(torch.load(os.path.join(model_directory, "pytorch_model.bin"), map_location=torch.device('cuda')))
     tokenizer = AutoTokenizer.from_pretrained(pretrained_model, config=tokenizer_config)
 
