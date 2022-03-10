@@ -6,3 +6,4 @@ scripts/log
 scripts/demo/output.tsv
 scripts/create_data.py
 scripts/pred.json
+scripts/__pycache__
