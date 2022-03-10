@@ -1,3 +1,8 @@
+'''
+modified data loading part of
+https://github.com/huggingface/transformers/blob/master/examples/pytorch/question-answering/run_qa_no_trainer.py
+'''
+
 import argparse
 import logging
 import math
