@@ -3,4 +3,5 @@ models/
 qa/
 scripts/obs
 scripts/log
+scripts/demo/output.tsv
 scripts/create_data.py
