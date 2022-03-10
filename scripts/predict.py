@@ -62,10 +62,13 @@ def main():
                 reader = csv.reader(f, delimiter='\t')
                 writer = csv.writer(o, delimiter='\t')
 
-                for row in reader:
+                for i,row in enumerate(reader):
                     context = row[0]
                     questions = row[1:]
+                    logger.info('#'+str(i))
+                    logger.info('Q: '+str(*questions))
                     answers = [predict(question, context) for question in questions]
+                    logger.info('A: '+str(*answers))
                     writer.writerow(answers)
     
     elif mode == 'test':

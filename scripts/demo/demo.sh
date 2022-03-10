@@ -13,7 +13,7 @@ input_path=${SCRIPT_DIR}/demo/input.tsv
 output_path=${SCRIPT_DIR}/demo/output.tsv
 
 CUDA_VISIBLE_DEVICES=0 python ${SCRIPT_DIR}/predict.py \
-  --mode predict \
+  --mode pred \
   --model_dir ${model_dir} \
   --pretrained ${pretrained_model} \
   --input_path ${input_path} \

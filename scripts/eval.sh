@@ -5,15 +5,15 @@ DATA_DIR=${PJ_DIR}/data
 
 ## mode
 mode=test
-
-## finetuned model
-model_dir=${MODEL_DIR}/bert-base-uncased_tok_2_3e-5_24
+## snt/tok
+type=tok
 
 ## model
 pretrained_model=bert-base-uncased
-
+## finetuned model
+model_dir=${MODEL_DIR}/bert-base-uncased_${type}_2_3e-5_12
 ## test data path (.json)
-test_path=${DATA_DIR}/wiki/advcl_tok_test.json
+test_path=${DATA_DIR}/wiki/advcl_${type}_test.json
 
 CUDA_VISIBLE_DEVICES=0 python ${SCRIPT_DIR}/predict.py \
   --mode ${mode} \
