@@ -93,10 +93,16 @@ def main():
         # Downloading and loading a dataset from the hub.
         #raw_datasets = load_dataset(args.dataset_name, args.dataset_config_name)
         #data_files = {'train': '../data/squad/train-v1.1.json', 'validation': '../data/squad/dev-v1.1.json'}
-        data_files = {'train': '', 'validation': '',}
-        data_files['train'] = args.custom_train_data
-        data_files['validation'] = args.custom_dev_data
-
+        if (args.custom_train_data and args.custom_dev_data):
+            data_files = {'train': '', 'validation': ''}
+            data_files['train'] = args.custom_train_data
+            data_files['validation'] = args.custom_dev_data
+        elif args.custom_test_data:
+            data_files = {'test': ''}
+            data_files['test'] = args.custom_test_data
+        else:
+            sys.exit()
+        logger.info('hoge')
         raw_datasets = load_dataset('squad.py', data_files=data_files)
 
     else:
@@ -116,6 +122,8 @@ def main():
     #
     # In distributed training, the .from_pretrained methods guarantee that only one local process can concurrently
     # download model & vocab.
+
+    
 
     if args.config_name:
         config = AutoConfig.from_pretrained(args.config_name)
@@ -613,6 +621,9 @@ def parse_args():
     )
     parser.add_argument(
         "--custom_dev_data", type=str, default=None, help="A json file containing the validation data."
+    )
+    parser.add_argument(
+        "--custom_test_data", type=str, default=None, help="A json file containing the validation data."
     )
     parser.add_argument(
         "--dataset_config_name",
