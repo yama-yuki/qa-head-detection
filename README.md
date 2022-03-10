@@ -1,4 +1,4 @@
-# qa-head-detection
+# qa-head-prediction
 
 Table of Contents
 =================
@@ -44,7 +44,7 @@ The train/validation files should look like this.
            "question": "What is the head of leaving ?", "id": "478389"}]}
 ```
 
-[2] (Ongoing) Detect a dependency head of a word with BERT QA models.
+[2] (Ongoing) Predict a dependency head of a word with BERT QA models.
 
 ## Requirements
 - python 3.8
@@ -56,9 +56,11 @@ The train/validation files should look like this.
 1. Fine-tune on a custom dataset
 # Train
 sh train.sh
+# Evaluate
+sh eval.sh
 # Predict
 sh demo.sh
 
-2. Dep-head detection
+2. Dep-head Prediction
 To be written
 ```
