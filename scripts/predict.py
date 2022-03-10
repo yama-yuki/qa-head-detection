@@ -1,11 +1,20 @@
 import argparse
 import csv
 import json
+import logging
 import os
 import sys
 import torch
 from transformers import BertForQuestionAnswering, AutoTokenizer, AutoConfig
-from eval import evaluate
+from tqdm import tqdm
+from evalq import evaluate
+
+logger = logging.getLogger('EVAL_LOG')
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%m/%d/%Y %H:%M:%S",
+    level=logging.INFO,
+)
 
 def main():
     ## parse arguments
@@ -13,8 +22,9 @@ def main():
     parser.add_argument('--mode', default='pred')
     parser.add_argument('--model_dir')
     parser.add_argument('--pretrained', default='bert-base-uncased')
-    parser.add_argument('--input_path', hint='.json')
-    parser.add_argument('--output_path', hint='.json')
+    parser.add_argument('--input_path', help='.json')
+    parser.add_argument('--output_path', help='.json')
+    parser.add_argument('--test_path', help='.json')
     args = parser.parse_args()
 
     mode = args.mode
@@ -40,6 +50,8 @@ def main():
 
         return answer
 
+    ## mode specification
+    logger.info('MODE: '+mode)
     if mode == 'pred':
         ## predict & write out
         in_path = args.input_path
@@ -60,19 +72,47 @@ def main():
         ## evaluate on test set
         test_path = args.test_path
         pred_path = 'pred.json'
-        
+
+        logger.info('LOADING: '+test_path)
         with open(test_path, mode='r', encoding='utf-8') as f:
             dataset_json = json.load(f)
             dataset = dataset_json['data']
-        with open(pred_path, mode='r', encoding='utf-8') as g:
-            predictions = json.load(g)
 
+        def make_pred_json(dataset):
+            predictions = {}
+
+            for entry in tqdm(dataset[0]['paragraphs']):
+                ## split data             
+                context = entry['context']
+                q_list = [qa['question'] for qa in entry['qas']] #qa['answers'][0]['text']
+                id_list = [qa['id'] for qa in entry['qas']]
+
+                ## predict
+                preds = [predict(q, context) for q in q_list]
+
+                ## adding to new_entry
+                for pred,idx in zip(preds,id_list):
+                    predictions[idx] = pred
+
+                ##{'context': "Do n't cross the bridge until you come to it is an English language proverb that is rich in metaphor .", 'qas': [{'answers': [{'answer_start': 68, 'text': 'proverb'}], 'question': 'come', 'id': '720473'}, {'answers': [{'answer_start': 7, 'text': 'cross'}], 'question': 'proverb', 'id': '720474'}]}
+
+            return predictions
+
+        predictions = make_pred_json(dataset)
+        #sys.exit()
+
+        with open(pred_path, mode='w', encoding='utf-8') as g:
+            json.dump(predictions, g)
+
+        #del pred_path
         print(json.dumps(evaluate(dataset, predictions)))
 
     else:
         sys.exit('SPECIFY MODE')
 
-
+## {"data": [{"title": "None", "paragraphs": 
+## [{ "context": <context>, "qas": [
+## {"answers": [{"answer_start": <id>, "text": <ans>}], "question": <question>, "id": <id>},
 
 if __name__ == '__main__':
     main()
