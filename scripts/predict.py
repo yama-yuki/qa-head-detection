@@ -61,10 +61,11 @@ def main():
             with open(out_path,mode='w',encoding='utf-8') as o:
                 reader = csv.reader(f, delimiter='\t')
                 writer = csv.writer(o, delimiter='\t')
-
+                
                 for i,row in enumerate(reader):
-                    context = row[0]
-                    questions = row[1:]
+                    logger.info(row)
+                    questions = row[0:-1]
+                    context = row[-1]
                     logger.info('#'+str(i))
                     logger.info('Q: '+str(*questions))
                     answers = [predict(question, context) for question in questions]

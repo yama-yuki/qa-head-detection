@@ -28,9 +28,8 @@ mkdir -p ${output}
 #CUDA_VISIBLE_DEVICES=0 
 python ${SCRIPT_DIR}/main.py \
   --model_name_or_path ${model_name} \
-  --dataset_name ${data_type} \
-  --custom_train_data ${train_data} \
-  --custom_dev_data ${dev_data} \
+  --train_file ${train_data} \
+  --validation_file ${dev_data} \
   --per_device_train_batch_size ${batch_size} \
   --learning_rate ${learning_rate} \
   --num_train_epochs ${epochs} \

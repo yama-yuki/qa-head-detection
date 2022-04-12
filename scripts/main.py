@@ -96,13 +96,15 @@ def main():
     if args.dataset_name is not None:
         ## modified for custom datasets
         # Downloading and loading a dataset from the hub.
-        #raw_datasets = load_dataset(args.dataset_name, args.dataset_config_name)
-        #data_files = {'train': '../data/squad/train-v1.1.json', 'validation': '../data/squad/dev-v1.1.json'}
+        raw_datasets = load_dataset(args.dataset_name, args.dataset_config_name)
+        data_files = {'train': '../data/squad/train-v1.1.json', 'validation': '../data/squad/dev-v1.1.json'}
+        
+        '''
         data_files = {'train': '', 'validation': ''}
         data_files['train'] = args.custom_train_data
         data_files['validation'] = args.custom_dev_data
-
         raw_datasets = load_dataset('squad.py', data_files=data_files)
+        '''
 
     else:
         data_files = {}
@@ -112,8 +114,9 @@ def main():
             data_files["validation"] = args.validation_file
         if args.test_file is not None:
             data_files["test"] = args.test_file
-        extension = args.train_file.split(".")[-1]
-        raw_datasets = load_dataset(extension, data_files=data_files, field="data")
+        #extension = args.train_file.split(".")[-1]
+        #raw_datasets = load_dataset(extension, data_files=data_files, field="data")
+        raw_datasets = load_dataset('squad.py', data_files=data_files)
     # See more about loading any type of standard or custom dataset (from files, python dict, pandas DataFrame, etc) at
     # https://huggingface.co/docs/datasets/loading_datasets.html.
 
